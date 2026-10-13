@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://localhost:8000/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Based Autonomous Navigation System — Simulation Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="./AI-Based Autonomous Navigation System — Simulation Dashboard_files/css2" rel="stylesheet">
+    <link rel="stylesheet" href="./AI-Based Autonomous Navigation System — Simulation Dashboard_files/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Navigation Bar -->
+        <header class="top-nav">
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="brand-title">AI Navigation System</h1>
+                    <span class="brand-subtitle">Autonomous Mobile Robot Simulation • Four-Directional A* Planner</span>
+                </div>
+            </div>
+            <div class="nav-status">
+                <div class="status-indicator">
+                    <span class="pulse-dot"></span>
+                    <span id="backend-status">Python Engine Connected</span>
+                </div>
+                <div class="badge">Hybrid AI Architecture</div>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <!-- Left Control Panel -->
+            <aside class="control-panel glass-panel">
+                <div class="panel-section">
+                    <h2 class="section-title">Tools &amp; Interaction</h2>
+                    <div class="button-group-grid">
+                        <button id="btn-draw" class="tool-btn" data-mode="draw">
+                            <span class="icon">⬛</span> Wall (Draw)
+                        </button>
+                        <button id="btn-erase" class="tool-btn active" data-mode="erase">
+                            <span class="icon">⬜</span> Erase
+                        </button>
+                        <button id="btn-set-start" class="tool-btn" data-mode="start">
+                            <span class="icon" style="color: var(--accent-start)">🟢</span> Start (S)
+                        </button>
+                        <button id="btn-set-goal" class="tool-btn" data-mode="goal">
+                            <span class="icon" style="color: var(--accent-goal)">🔴</span> Goal (G)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h2 class="section-title">Execution Controls</h2>
+                    <div class="action-buttons">
+                        <button id="btn-plan" class="btn btn-primary">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"></path>
+                            </svg>
+                            Compute A* Path
+                        </button>
+                        <button id="btn-animate" class="btn btn-success" disabled="">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                            </svg>
+                            Animate Robot
+                        </button>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h2 class="section-title">Environment Presets</h2>
+                    <div class="button-group-grid">
+                        <button id="btn-maze" class="btn btn-secondary">Generate Maze</button>
+                        <button id="btn-random" class="btn btn-secondary">Random Scatter</button>
+                        <button id="btn-clear-path" class="btn btn-secondary">Clear Path</button>
+                        <button id="btn-clear-all" class="btn btn-danger">Reset Grid</button>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h2 class="section-title">Grid Configuration</h2>
+                    <div class="config-row">
+                        <label for="select-size">Grid Dimensions:</label>
+                        <select id="select-size" class="form-select">
+                            <option value="20x20" selected="">20 × 20 (Standard)</option>
+                            <option value="25x25">25 × 25 (Dense)</option>
+                            <option value="30x20">30 × 20 (Wide)</option>
+                            <option value="15x15">15 × 15 (Compact)</option>
+                        </select>
+                    </div>
+                    <div class="config-row">
+                        <label for="speed-slider">Robot Speed: <span id="speed-label">5x</span></label>
+                        <input type="range" id="speed-slider" min="1" max="5" value="2" class="form-slider">
+                    </div>
+                </div>
+
+                <!-- Telemetry & Metrics -->
+                <div class="panel-section metrics-section">
+                    <h2 class="section-title">Live Telemetry</h2>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <span class="metric-label">Path Length</span>
+                            <span id="metric-length" class="metric-val">28 steps</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-label">Manhattan Distance</span>
+                            <span id="metric-manhattan" class="metric-val">26 steps</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-label">Engine Latency</span>
+                            <span id="metric-latency" class="metric-val">2.77 ms</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-label">Obstacle Density</span>
+                            <span id="metric-density" class="metric-val">27.0%</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Center Simulation Canvas -->
+            <section class="simulation-viewport glass-panel">
+                <div class="viewport-header">
+                    <div class="coordinates-hud">
+                        <span>Pointer: <strong id="hud-pointer">(27, 2)</strong></span>
+                        <span>Start: <strong id="hud-start" style="color: var(--accent-start)">(1, 1)</strong></span>
+                        <span>Goal: <strong id="hud-goal" style="color: var(--accent-goal)">(14, 14)</strong></span>
+                        <span>Robot: <strong id="hud-robot" style="color: var(--accent-cyan)">(14, 14)</strong></span>
+                    </div>
+                    <div class="legend">
+                        <span class="legend-item"><span class="legend-box start-box"></span> Start</span>
+                        <span class="legend-item"><span class="legend-box goal-box"></span> Goal</span>
+                        <span class="legend-item"><span class="legend-box wall-box"></span> Obstacle</span>
+                        <span class="legend-item"><span class="legend-box path-box"></span> A* Route</span>
+                    </div>
+                </div>
+
+                <div class="canvas-wrapper">
+                    <canvas id="gridCanvas" width="540" height="360"></canvas>
+                </div>
+
+                <div class="viewport-footer">
+                    <span id="system-message" class="system-message">Robot successfully arrived at goal (14, 14)!</span>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="./AI-Based Autonomous Navigation System — Simulation Dashboard_files/app.js.download"></script>
+
+
+</body></html>
